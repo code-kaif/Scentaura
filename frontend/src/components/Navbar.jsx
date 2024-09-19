@@ -56,6 +56,7 @@ const Navbar = () => {
           <Link to={"/cart"}>
             <FiShoppingCart size={24} />
           </Link>
+          <p className="font-medium px-2">{count > 0 ? count : ""}</p>
         </div>
       </div>
     </div>
