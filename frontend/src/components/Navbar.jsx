@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiShoppingCart } from "react-icons/fi";
-import { MyContext } from "../main";
+import { useAuth } from "../context/ContextProvider";
+import Logout from "../pages/Logout";
 
 const Navbar = () => {
-  const { count } = useContext(MyContext);
+  const { count, user } = useAuth();
   let Links = [
     { name: "Home", link: "/" },
     { name: "Perfume", link: "/perfume" },
@@ -38,25 +39,33 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
-          <div className="md:ml-3 ml-0 md:mb-0 mb-3">
-            <Link to={"/login"} onClick={() => setOpen(!open)}>
-              <button className="md:px-3 md:py-2 px-5 py-2 md:mx-4 mx-0 bg-black text-white font-medium rounded-md">
-                Login
-              </button>
-            </Link>
-          </div>
-          <div className="md:px-5 mr-12 mt-1 pl-2 cursor-pointer md:flex hidden">
+          {user ? (
+            <Logout />
+          ) : (
+            <div className="md:ml-3 ml-0 md:mb-0 mb-3">
+              <Link to={"/login"} onClick={() => setOpen(!open)}>
+                <button className="md:px-3 md:py-2 px-5 py-2 md:mx-4 mx-0 bg-black text-white font-medium rounded-md">
+                  Login
+                </button>
+              </Link>
+            </div>
+          )}
+          <div className="md:px-5 mr-12 mt-1 pl-2 cursor-pointer md:flex hidden relative">
             <Link to={"/cart"}>
               <FiShoppingCart size={24} />
             </Link>
-            <p className="font-medium px-2">{count > 0 ? count : ""}</p>
+            <p className="font-medium px-1 text-[13px] relative bottom-2">
+              {count > 0 ? count : ""}
+            </p>
           </div>
         </ul>
         <div className="md:px-5 mr-12 mt-1 pl-2 cursor-pointer md:hidden flex">
           <Link to={"/cart"}>
             <FiShoppingCart size={24} />
           </Link>
-          <p className="font-medium px-2">{count > 0 ? count : ""}</p>
+          <p className="font-medium px-1 text-[13px] relative bottom-2">
+            {count > 0 ? count : ""}
+          </p>
         </div>
       </div>
     </div>

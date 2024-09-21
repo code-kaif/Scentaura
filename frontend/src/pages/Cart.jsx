@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { MyContext } from "../main";
+import { useAuth } from "../context/ContextProvider";
 
 const Cart = () => {
-  const { count } = useContext(MyContext);
+  const { count } = useAuth();
   return (
     <div className="max-w-screen-2xl mt-5 md:px-10 px-7">
       <div className="flex justify-center items-center h-[90vh]">

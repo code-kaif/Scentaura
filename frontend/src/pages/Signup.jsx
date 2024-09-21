@@ -1,15 +1,20 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { url } from "../main";
+import { useAuth } from "../context/ContextProvider";
+
 function Signup() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   const onSubmit = async (data) => {
     const userInfo = {
       name: data.name,
@@ -17,25 +22,22 @@ function Signup() {
       password: data.password,
     };
     await axios
-      .post(`/user/signup`, userInfo, {
-        withCredentials: true,
-      })
+      .post(`${url}/user/signup`, userInfo)
       .then((res) => {
-        localStorage.setItem("User", JSON.stringify(res.data.user));
-        toast.success(res.data.message);
-        <Navigate to={"/"} />;
-        // setIsAuth(true);
+        toast.success("Signup Successfully");
+        navigate(from, { replace: true });
         setTimeout(() => {
           window.location.reload();
+          localStorage.setItem("Users", JSON.stringify(res.data.user));
         }, 1000);
       })
       .catch((err) => {
-        toast.error("User Already Exist");
-        // setIsAuth(false);
-        console.log(err);
+        if (err.response) {
+          console.log(err);
+          toast.error("User Already Exist");
+        }
       });
   };
-  //   if (isAuth) return <Navigate to={"/"} />;
   return (
     <>
       <div className="h-[90vh] flex justify-center items-center flex-col">

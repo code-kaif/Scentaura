@@ -1,8 +1,22 @@
-import React from "react";
-import data from "../../public/data.js";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Products from "../components/Products";
+import { url } from "../main";
 
 const Home = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    async function getPerfume() {
+      try {
+        const res = await axios.get(`${url}/perfume`);
+        setData(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getPerfume();
+  }, []);
   const perfume = data.filter((prod) => prod.category == "perfume");
   const gift = data.filter((prod) => prod.category == "gift");
   const luxury = data.filter((prod) => prod.category == "luxury");

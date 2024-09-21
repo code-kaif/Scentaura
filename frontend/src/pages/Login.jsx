@@ -1,10 +1,14 @@
-import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { url } from "../main";
 
 function Login() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
   const {
     register,
     handleSubmit,
@@ -17,26 +21,26 @@ function Login() {
       password: data.password,
     };
     await axios
-      .post(`/user/login`, userInfo, {
-        withCredentials: true,
-      })
+      .post(`${url}/user/login`, userInfo)
       .then((res) => {
-        localStorage.setItem("User", JSON.stringify(res.data.user));
-        toast.success(res.data.message);
-        <Navigate to={"/"} />;
-        // setIsAuth(true);
-
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        console.log(res.data);
+        if (res.data) {
+          toast.success("Login Successfully");
+          navigate(from, { replace: true });
+          setTimeout(() => {
+            window.location.reload();
+            localStorage.setItem("Users", JSON.stringify(res.data.user));
+          }, 1000);
+        }
       })
       .catch((err) => {
-        // setIsAuth(false);
-        toast.error("Invalid Email or Password");
-        console.log(err);
+        if (err.response) {
+          console.log(err);
+          toast.error("Invalid Email or Password");
+          setTimeout(() => {}, 2000);
+        }
       });
   };
-  // if (isAuth) return <Navigate to={"/"} />;
   return (
     <>
       <div className="h-[90vh] flex flex-col justify-center items-center">

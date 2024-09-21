@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { FaStar } from "react-icons/fa6";
 import { FaRupeeSign } from "react-icons/fa";
-import { MyContext } from "../main";
+import { useAuth } from "../context/ContextProvider";
+import { Link } from "react-router-dom";
 
 const Products = ({ title, category }) => {
-  const { count, setCount } = useContext(MyContext);
+  const { count, setCount } = useAuth();
   return (
     <>
       <div className="flex justify-around items-center flex-col md:flex-row">
@@ -17,7 +18,7 @@ const Products = ({ title, category }) => {
         {category.map((product) => (
           <div
             key={product.id}
-            className="md:w-[20vw] w-[85vw] h-[70vh] rounded-md  my-10"
+            className="md:w-[20vw] w-[85vw] h-[70vh] rounded-md border-2 my-10"
           >
             <div className="h-[70%] w-[100%]">
               <img
@@ -28,9 +29,11 @@ const Products = ({ title, category }) => {
             </div>
             <div className="flex flex-col justify-between items-start md:space-y-1 space-y-3">
               <div className="px-3">
-                <h3 className="font-medium whitespace-nowrap overflow-hidden md:w-[18vw] w-[75vw] name">
-                  {product.name}
-                </h3>
+                <Link to={`/perfume/${product._id}`}>
+                  <h3 className="hover:underline cursor-pointer duration-200 font-medium whitespace-nowrap overflow-hidden md:w-[18vw] w-[75vw] name">
+                    {product.name}
+                  </h3>
+                </Link>
                 <div className="flex items-center font-medium space-x-1">
                   <FaStar />
                   <p>{product.rating}</p>

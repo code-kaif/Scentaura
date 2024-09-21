@@ -3,19 +3,14 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
+import AuthProvider from "./context/ContextProvider.jsx";
 
-export const MyContext = createContext();
-const AuthContext = () => {
-  const [count, setCount] = useState(0);
-  return (
-    <MyContext.Provider value={{ count, setCount }}>
-      <App />
-    </MyContext.Provider>
-  );
-};
+export const url = "http://localhost:5000";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <AuthContext />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </BrowserRouter>
 );

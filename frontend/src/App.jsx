@@ -9,6 +9,8 @@ import Perfume from "./pages/Perfume";
 import Bodywash from "./pages/Bodywash";
 import AttarOodh from "./pages/AttarOodh";
 import Signup from "./pages/Signup";
+import { Toaster } from "react-hot-toast";
+import Page from "./components/Page";
 
 function App() {
   return (
@@ -23,8 +25,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/perfume/:id" element={<Page />} />
         </Routes>
         <Footer />
+        <Toaster />
       </div>
     </>
   );
